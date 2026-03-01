@@ -22,14 +22,18 @@ void printCharCodeTable() {
         cout << c << "\t\t" << static_cast<int>(c) << endl;
     }
 
-    // Русский алфавит (верхний регистр) — диапазон кириллицы в Windows‑1251/UTF‑8
-    for (char c1 = -64; c1 >= -33; c1--) {  // А–Я в однобайтовой кодировке
-        cout << c1 << "\t\t" << static_cast<int>(static_cast<unsigned char>(c1)) << endl;
+    // Русский алфавит (верхний регистр): А–Я
+    const char upperRussian[] = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ";
+    for (int i = 0; upperRussian[i] != '\0'; i++) {
+        cout << upperRussian[i] << "\t\t"
+             << static_cast<int>(static_cast<unsigned char>(upperRussian[i])) << endl;
     }
 
-    // Русский алфавит (нижний регистр) — аналогично
-    for (char c1 = -32; c1 >= -1; c1--) {  // а–я в однобайтовой кодировке
-        cout << c1 << "\t\t" << static_cast<int>(static_cast<unsigned char>(c1)) << endl;
+    // Русский алфавит (нижний регистр): а–я
+    const char lowerRussian[] = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя";
+    for (int i = 0; lowerRussian[i] != '\0'; i++) {
+        cout << lowerRussian[i] << "\t\t"
+             << static_cast<int>(static_cast<unsigned char>(lowerRussian[i])) << endl;
     }
 
     // Цифры
@@ -179,3 +183,4 @@ int main() {
     cout << "Готово! Результаты записаны в result.txt\n";
     return 0;
 }
+
