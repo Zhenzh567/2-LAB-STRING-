@@ -1,185 +1,212 @@
+
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <vector>
-#include <algorithm>
-#include <limits>
 using namespace std;
 
-string glas = "аеёиоуъыьэюя";
-string soglas = "бвгджзйклмнопрстфхцчшщ";
-
-// Пункт 0
-void task0() {
-    cout << "Буква -> Код\n";
-    string vse = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.,!?;:-()\"'";
-    for(int i = 0; i < vse.size(); i++) {
-        cout << vse[i] << " -> " << (int)vse[i] << endl;
-    }
-}
-
-// Задача 1
-void task1() {
-    cout << "\nВведи строку: ";
-    char s[100];
-    cin.getline(s, 99);
-    
-    char r[100];
-    int k = 0;
-    char znaki[] = {'.', ',', '!', '?', ';', ':', '-', '(', ')', '"', '\''};
-    
-    for(int i = 0; i < 100; i++) {
-        char c = s[i];
-        if(c == 0) break;
-        
-        bool eto_znak = false;
-        for(int j = 0; j < 11; j++) {
-            if(c == znaki[j]) eto_znak = true;
-        }
-        
-        if(eto_znak == false) {
-            r[k] = c;
-            k++;
-        }
-    }
-    r[k] = 0;
-    cout << "Результат: " << r << endl;
-}
-
-
-void task2() {
-    // читаем N
-    ifstream file("input.txt");
-    int N;
-    file >> N;
-    file.close();
-    
-    // читаем текст из файла построчно
-    ifstream file2("text.txt");
-    string text = "";
-    string line;
-    
-    // читаем все строки из файла
-    while(getline(file2, line)) {
-        text = text + line + " ";
-    }
-    file2.close();
-    
-    vector<string> slova;
-    string tek = "";
-    
-    // проходим по всем символам
-    for(int i = 0; i < text.size(); i++) {
-        char c = text[i];
-        
-        // проверяем буква ли это
-        bool eto_bukva = false;
-        if((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
-           (c >= 'а' && c <= 'я') || (c >= 'А' && c <= 'Я') ||
-           c == 'ё' || c == 'Ё') {
-            eto_bukva = true;
-        }
-        
-        if(eto_bukva == true) {
-            tek = tek + c;
-        } else {
-            if(tek != "") {
-                // считаем гласные и согласные
-                int g = 0, s = 0;
-                for(int j = 0; j < tek.size(); j++) {
-                    char ch = tek[j];
-            
-            // делаем маленькой
-            if(ch >= 'A' && ch <= 'Z') ch = ch + 32;
-            if(ch >= 'А' && ch <= 'Я') ch = ch + 32;
-            if(ch == 'Ё') ch = 'ё';
-            
-            // проверяем гласная
-            for(int k = 0; k < glas.size(); k++) {
-                if(ch == glas[k]) g++;
-            }
-            // проверяем согласная
-            for(int k = 0; k < soglas.size(); k++) {
-                if(ch == soglas[k]) s++;
-            }
-        }
-        
-        // если гласных столько же сколько согласных
-        if(g == s && g > 0) {
-            // проверяем нет ли такого слова уже
-            bool est = false;
-            for(int j = 0; j < slova.size(); j++) {
-                if(slova[j] == tek) est = true;
-            }
-            
-            if(est == false) {
-                slova.push_back(tek);
-            }
-        }
-        tek = "";
-    }
-}
-}
-
-    // сортируем слова по длине (от самых длинных)
-    for(int i = 0; i < slova.size(); i++) {
-        for(int j = i+1; j < slova.size(); j++) {
-            if(slova[i].size() < slova[j].size()) {
-                string temp = slova[i];
-                slova[i] = slova[j];
-                slova[j] = temp;
-            }
-        }
-    }
-    
-    // записываем результат
-    ofstream out("result.txt");
-    int skolko = N;
-    if(skolko > slova.size()) skolko = slova.size();
-    
-    for(int i = 0; i < skolko; i++) {
-        out << i+1 << ". " << slova[i] << " (" << slova[i].size() << " букв)\n";
-    }
-    out.close();
-    
-    cout << "\nГотово! Найдено слов: " << slova.size() << endl;
-}
-
-// Функция main
 int main() {
-    int choice;
-
-    do {
-        cout << "\n=== МЕНЮ ===" << endl;
-        cout << "0 — Показать коды символов" << endl;
-        cout << "1 — Удалить знаки препинания из строки" << endl;
-        cout << "2 — Найти слова с равным числом гласных и согласных" << endl;
-        cout << "3 — Выход" << endl;
-        cout << "Выберите задачу (0–3): ";
-        cin >> choice;
-
-        // Очистка буфера ввода от символа новой строки
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-        switch(choice) {
-            case 0:
-                task0();
+    setlocale(LC_ALL, "Russian");
+    
+    /////////////////////////////////////////////
+    // ПУНКТ 0 -  показываем таблицу символов
+    /////////////////////////////////////////////
+    cout << "ПУНКТ 0:" << endl;
+    
+    // Все символы подряд: русские буквы, английские, цифры, знаки
+    char vse_simvoly[] = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,!?;:-()\"";
+    
+    // Печатаем каждый символ и его номер
+    for(int i = 0; vse_simvoly[i] != 0; i++) {
+        cout << vse_simvoly[i] << "=" << (int)vse_simvoly[i] << " ";
+    }
+    cout << endl;
+    cout << endl;
+    
+    /////////////////////////////////////////////
+    // ЗАДАЧА 1 - убираем знаки препинания из строки
+    /////////////////////////////////////////////
+    cout << "ЗАДАЧА 1: Напиши строку" << endl;
+    
+    char stroka[101];              // куда положим то что написал пользователь
+    cin.getline(stroka, 100);       // читаем строку
+    
+    char znaki[] = ".,!?;:-()\"";   // все знаки препинания которые надо убрать
+    char chistaya_stroka[101];      // сюда положим результат
+    int poziciya = 0;                // место в чистой строке
+    
+    // Смотрим каждый символ из того что написал пользователь
+    for(int i = 0; stroka[i] != 0; i++) {
+        
+        // Проверяем - это знак препинания?
+        bool eto_znak = false;
+        for(int j = 0; znaki[j] != 0; j++) {
+            if(stroka[i] == znaki[j]) {
+                eto_znak = true;    // да, это знак препинания
                 break;
-            case 1:
-                task1();
-                break;
-            case 2:
-                task2();
-                break;
-            case 3:
-                cout << "Выход из программы." << endl;
-                break;
-            default:
-                cout << "Неверный выбор. Попробуйте снова." << endl;
-                break;
+            }
         }
-    } while(choice != 3);
-
+        
+        // Если это не знак препинания - кладем в результат
+        if(eto_znak == false) {
+            chistaya_stroka[poziciya] = stroka[i];
+            poziciya++;
+        }
+    }
+    
+    chistaya_stroka[poziciya] = 0;   // ставим конец строки
+    cout << "Получилось: " << chistaya_stroka << endl;
+    cout << endl;
+    
+    /////////////////////////////////////////////
+    // ЗАДАЧА 2 - ищем слова где гласных столько же сколько согласных
+    /////////////////////////////////////////////
+    cout << "ЗАДАЧА 2: Читаю файл text.txt" << endl;
+    
+    // Открываем файлы
+    ifstream file_s_textom("text.txt");
+    ifstream file_s_N("input.txt");
+    
+    // Читаем сколько слов надо найти
+    int N;
+    file_s_N >> N;
+    file_s_N.close();
+    
+    // Гласные и согласные буквы
+    char glasnye[] = "аеёиоуъыьэюя";
+    char soglasnye[] = "бвгджзйклмнпрстфхцчшщ";
+    
+    // Здесь будем хранить все слова из файла
+    string vse_slova[1000];
+    int skolko_vsego_slov = 0;
+    
+    // Читаем файл по одной букве
+    string tekushee_slovo = "";
+    char odna_bukva;
+    
+    while(file_s_textom.get(odna_bukva)) {
+        
+        // Если буква большая - делаем маленькой
+        if(odna_bukva >= 'А' && odna_bukva <= 'Я') {
+            odna_bukva = odna_bukva + 32;
+        }
+        
+        // Проверяем - это русская буква или цифра?
+        bool eto_bukva_ili_cifra = false;
+        if((odna_bukva >= 'а' && odna_bukva <= 'я') || (odna_bukva >= '0' && odna_bukva <= '9')) {
+            eto_bukva_ili_cifra = true;
+        }
+        
+        if(eto_bukva_ili_cifra) {
+            // Если да - добавляем к текущему слову
+            tekushee_slovo = tekushee_slovo + odna_bukva;
+        } else {
+            // Если нет - значит слово закончилось
+            if(tekushee_slovo != "") {
+                
+                // Проверяем, может такое слово уже есть?
+                bool uzhe_bylo = false;
+                for(int i = 0; i < skolko_vsego_slov; i++) {
+                    if(vse_slova[i] == tekushee_slovo) {
+                        uzhe_bylo = true;
+                        break;
+                    }
+                }
+                
+                // Если такого слова еще нет - добавляем
+                if(uzhe_bylo == false) {
+                    vse_slova[skolko_vsego_slov] = tekushee_slovo;
+                    skolko_vsego_slov++;
+                }
+                
+                // Начинаем новое слово
+                tekushee_slovo = "";
+            }
+        }
+    }
+    file_s_textom.close();
+    
+    cout << "Всего разных слов: " << skolko_vsego_slov << endl;
+    
+    // Теперь ищем среди всех слов те, где гласных = согласных
+    string podhodyashie_slova[1000];
+    int skolko_podhodit = 0;
+    
+    for(int i = 0; i < skolko_vsego_slov; i++) {
+        
+        int kolvo_glasnyh = 0;
+        int kolvo_soglasnyh = 0;
+        
+        // Смотрим каждую букву в слове
+        for(int j = 0; j < vse_slova[i].size(); j++) {
+            char bukva_v_slove = vse_slova[i][j];
+            
+            // Цифры пропускаем
+            if(bukva_v_slove >= '0' && bukva_v_slove <= '9') {
+                continue;
+            }
+            
+            // Проверяем - это гласная?
+            bool eto_glasnaya = false;
+            for(int g = 0; glasnye[g] != 0; g++) {
+                if(bukva_v_slove == glasnye[g]) {
+                    eto_glasnaya = true;
+                    break;
+                }
+            }
+            
+            if(eto_glasnaya) {
+                kolvo_glasnyh++;
+            } else {
+                // Проверяем - это согласная?
+                for(int s = 0; soglasnye[s] != 0; s++) {
+                    if(bukva_v_slove == soglasnye[s]) {
+                        kolvo_soglasnyh++;
+                        break;
+                    }
+                }
+            }
+        }
+        
+        // Если гласных столько же сколько согласных - запоминаем слово
+        if(kolvo_glasnyh == kolvo_soglasnyh && kolvo_glasnyh > 0) {
+            podhodyashie_slova[skolko_podhodit] = vse_slova[i];
+            skolko_podhodit++;
+        }
+    }
+    
+    cout << "Подходящих слов: " << skolko_podhodit << endl;
+    
+    // Сортируем от самого длинного к самому короткому
+    for(int i = 0; i < skolko_podhodit - 1; i++) {
+        for(int j = i + 1; j < skolko_podhodit; j++) {
+            
+            int dlina_i = podhodyashie_slova[i].size();
+            int dlina_j = podhodyashie_slova[j].size();
+            
+            if(dlina_i < dlina_j) {
+                // Меняем местами
+                string vremya = podhodyashie_slova[i];
+                podhodyashie_slova[i] = podhodyashie_slova[j];
+                podhodyashie_slova[j] = vremya;
+            }
+        }
+    }
+    
+    // Записываем результат в файл
+    ofstream resultat("result.txt");
+    
+    // Сколько слов реально запишем (не больше чем нашли)
+    int skolko_zapishem = N;
+    if(skolko_zapishem > skolko_podhodit) {
+        skolko_zapishem = skolko_podhodit;
+    }
+    
+    for(int i = 0; i < skolko_zapishem; i++) {
+        resultat << podhodyashie_slova[i] << endl;
+    }
+    resultat.close();
+    
+    cout << "ГОТОВО! Смотри файл result.txt" << endl;
+    
     return 0;
 }
-
