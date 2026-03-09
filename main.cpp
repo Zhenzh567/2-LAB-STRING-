@@ -15,8 +15,8 @@ bool isDigit(char c) {
 }
 
 char toLower(char c) {
-    if ((c >= 'А' && c <= 'Я')) return c + ('а'-'А');   // Исправлено преобразование русских букв
-    if ((c >= 'A' && c <= 'Z')) return c - 'A' + 'a';   // Упростил выражение преобразования латинских букв
+    if ((c >= 'А' && c <= 'Я')) return c + ('а'-'А');   
+    if ((c >= 'A' && c <= 'Z')) return c - 'A' + 'a';   
     return c;
 }
 
@@ -38,8 +38,8 @@ int main() {
     /////////////////////////////////////////////
     cout << "ЗАДАЧА 1: Напиши строку" << endl;
     char stroka[101];
-    cin.getline(stroka, sizeof(stroka));                 // Используем sizeof для безопасности размера буфера
-    const char* znaki = ".,!?;:-()'\"]";                 // Добавлены дополнительные знаки препинания
+    cin.getline(stroka, sizeof(stroka));                 
+    const char* znaki = ".,!?;:-()'\"]";                 
     char chistaya_stroka[101]{};
     int poziciya = 0;
     for (int i = 0; stroka[i]; ++i) {
@@ -68,7 +68,7 @@ int main() {
     file_s_N >> N;
     file_s_N.close();
 
-    const char* glasnye = "аеёиоуъыьэюя";               // Исправлена проверка для мягкого знака и твёрдого знака
+    const char* glasnye = "аеёиоуъыьэюя";              
     const char* soglasnye = "бвгджзйклмнпрстфхцчшщ";
 
     vector<string> vse_slova;
