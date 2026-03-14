@@ -91,19 +91,14 @@ int main() {
             start++;
         }
 
-        // Находим последний допустимый символ (букву или цифру) с конца
-        while (end >= start && !isLetter(tekushee_slovo[end]) && !isDigit(tekushee_slovo[end])) {
+        // Находим последний допустимый символ — БУКВУ с конца (обрезаем цифры и знаки на конце)
+        while (end >= start && !isLetter(tekushee_slovo[end])) {
             end--;
         }
 
-        // Копируем от start до end, сохраняя внутренние знаки
+        // Копируем от start до end включительно (теперь end указывает на последнюю букву)
         for (int i = start; i <= end; ++i) {
             chistoe_slovo += tekushee_slovo[i];
-        }
-
-        // ОБРЕЗКА: если слово заканчивается на цифру, обрезаем до последней буквы
-        while (!chistoe_slovo.empty() && isDigit(chistoe_slovo.back())) {
-            chistoe_slovo.pop_back();
         }
 
         // Проверяем, что слово не пустое и начинается на букву или цифру
@@ -166,6 +161,7 @@ int main() {
     // Сортировка подходящих слов по убыванию длины
     sort(podhodyashie_slova.begin(), podhodyashie_slova.end(),
         [](const string& s1, const string& s2) { return s1.length() > s2.length(); });
+
 
     // Записываем результат в файл
     ofstream resultat("result.txt");
